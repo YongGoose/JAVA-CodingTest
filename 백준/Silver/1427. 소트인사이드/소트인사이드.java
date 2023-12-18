@@ -1,39 +1,39 @@
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.StringTokenizer;
 
 public class Main {
+    static int[] array;
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-        StringTokenizer st = new StringTokenizer(br.readLine());
-
-        String number = st.nextToken();
-        String[] array = number.split("");
-        mdata[] mdataArray = new mdata[array.length];
+        String numbers = br.readLine();
+        array = new int[numbers.length()];
+        int[] resultArray = new int[numbers.length()];
 
         for (int i = 0; i < array.length; i++) {
-            mdataArray[i] = new mdata(Integer.parseInt(array[i]), i);
+            array[i] = Integer.parseInt(String.valueOf(numbers.charAt(i)));
         }
-        Arrays.sort(mdataArray);
-        for (int i = 0; i < mdataArray.length; i++) {
-            System.out.print(mdataArray[i].number);
+        for (int i = 0; i < array.length; i++) {
+            int min = 0;
+            int index = 0;
+            for (int j = i; j < array.length; j++) {
+                if (min < array[j]) {
+                    min = array[j];
+                    index = j;
+                }
+            }
+            swap(i, index);
+            resultArray[i] = min;
+        }
+        for (int i = 0; i < array.length; i++) {
+            System.out.print(resultArray[i]);
         }
     }
-}
-class mdata implements Comparable<mdata> {
-    int number;
-    int index;
 
-    public mdata(int number, int index) {
-        this.number = number;
-        this.index = index;
-    }
-
-    @Override
-    public int compareTo(mdata o) {
-        return o.number - this.number;
+    static void swap(int x, int y) {
+        int number;
+        number = array[x];
+        array[x] = array[y];
+        array[y] = number;
     }
 }
