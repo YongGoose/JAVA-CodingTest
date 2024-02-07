@@ -41,6 +41,8 @@ public class Main {
 
         while (low > left || high < right) {
             // 항상 높이가 더 높은 쪽으로 확장한다.
+            // low가 left까지 갔다는 것은 끝까지 간 것이므로 high에 1을 더한다.
+            // 아니면 high + 1 과 low - 1의 펜스 길이를 비교해 더 긴 쪽으로 간다.
             if (high < right && (low == left || fence[high + 1] > fence[low - 1])) {
                 high += 1;
                 height = Math.min(height, fence[high]);
