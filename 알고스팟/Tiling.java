@@ -28,7 +28,7 @@ public class Main {
         cache[3] = 3;
         for (int i = 4; i <= 100; i++) {
             cache[i] = (cache[i - 1] + cache[i - 2]) % MOD;
-        }
+        }//d
     }
 }
 
