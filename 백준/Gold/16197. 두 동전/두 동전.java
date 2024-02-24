@@ -11,8 +11,7 @@ public class Main {
     static boolean[][] board;
     static ArrayList<Coin> coins = new ArrayList<>();
     static int[][] dMove = {{1, 0}, {-1, 0}, {0, -1}, {0, 1}};
-    static boolean[][] firstVisited;
-    static boolean[][] secondVisited;
+    static boolean[][][][] visited;
     static int n, m;
 
     public static void main(String[] args) throws IOException {
@@ -23,8 +22,7 @@ public class Main {
         m = Integer.parseInt(st.nextToken()); // 가로
 
         board = new boolean[n][m];
-        firstVisited = new boolean[n][m];
-        secondVisited = new boolean[n][m];
+        visited = new boolean[n][m][n][m];
         for (int i = 0; i < n; i++) {
             String input = br.readLine();
             for (int j = 0; j < m; j++) {
@@ -51,8 +49,7 @@ public class Main {
                 break;
             }
 
-            firstVisited[firstCoin.y][firstCoin.x] = true;
-            secondVisited[secondCoin.y][secondCoin.x] = true;
+            visited[firstCoin.y][firstCoin.x][secondCoin.y][secondCoin.x] = true;
 
             for (int[] ints : dMove) {
                 int x1 = firstCoin.x + ints[1];
@@ -79,9 +76,8 @@ public class Main {
 
                 if (result == 1) {
                     return firstCoin.count + 1;
-                } else if (result == 2) {
-                    firstVisited[y1][x1] = true;
-                    secondVisited[y2][x2] = true;
+                } else if (result == 2 && !visited[y1][x1][y2][x2]) {
+                    visited[y1][x1][y2][x2] = true;
                     coins1.offer(new Coin(x1, y1, firstCoin.count + 1));
                     coins2.offer(new Coin(x2, y2, secondCoin.count + 1));
                 }
@@ -89,6 +85,7 @@ public class Main {
         }
         return -1;
     }
+
     static boolean canMove(int x, int y) {
         return x >= 0 && x < m && y >= 0 && y < n && board[y][x];
     }
