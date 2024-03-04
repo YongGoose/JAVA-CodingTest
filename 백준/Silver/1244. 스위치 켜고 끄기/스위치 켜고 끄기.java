@@ -48,7 +48,7 @@ public class Main {
         x = x - 1;
         int left = x - 1;
         int right = x + 1;
-        while (left >= 0 && right < lights.length) {
+        while (isOnBoard(left, right)) {
             if (lights[left] != lights[right]) {
                 break;
             }
