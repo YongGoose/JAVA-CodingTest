@@ -9,7 +9,6 @@ class Solution {
             if (checkWord(words[idx], words[idx + 1]) && validateWord(answers, words[idx + 1], idx + 1)) {
                 answers[idx + 1] = words[idx + 1];
             } else {
-                System.out.println("여기서 에러 발생");
                 break;
             }
             idx++;
@@ -29,8 +28,6 @@ class Solution {
 
             answer = new int[]{x, y};
         }
-        System.out.println(answers[idx] + words[words.length - 1]);
-        System.out.println(idx + 2);
         return answer;
     }
 
