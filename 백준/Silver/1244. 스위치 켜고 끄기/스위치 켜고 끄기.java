@@ -4,70 +4,77 @@ import java.io.InputStreamReader;
 import java.util.StringTokenizer;
 
 public class Main {
-    static int[] lights;
+    static int[] array;
 
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         StringTokenizer st = new StringTokenizer(br.readLine());
+        StringBuilder sb = new StringBuilder();
 
-        int lightNum = Integer.parseInt(st.nextToken());
-        lights = new int[lightNum];
+        int switchNum = Integer.parseInt(st.nextToken());
+        array = new int[switchNum];
 
         st = new StringTokenizer(br.readLine());
-        for (int i = 0; i < lightNum; i++) {
-            lights[i] = Integer.parseInt(st.nextToken());
+        for (int i = 0; i < switchNum; i++) {
+            array[i] = Integer.parseInt(st.nextToken());
         }
+        st = new StringTokenizer(br.readLine());
+        int studentsNum = Integer.parseInt(st.nextToken());
 
-        int testCase = Integer.parseInt(br.readLine());
-        while (testCase-- > 0) {
+        while (studentsNum-- > 0) {
             st = new StringTokenizer(br.readLine());
-            int gender = Integer.parseInt(st.nextToken());
-            if (gender == 1) {
-                boys(Integer.parseInt(st.nextToken()));
+            int type = Integer.parseInt(st.nextToken());
+            int number = Integer.parseInt(st.nextToken());
+
+            if (type == 1) {
+                male(number, switchNum);
             } else {
-                girls(Integer.parseInt(st.nextToken()));
+                female(number, switchNum);
             }
         }
-        for (int i = 0; i < lights.length; i++) {
-            System.out.print(lights[i] + " ");
+        for (int i = 0; i < switchNum; i++) {
             if ((i + 1) % 20 == 0) {
-                System.out.println();
+                sb.append(array[i]).append(" ").append("\n");
+
+            } else {
+                sb.append(array[i]).append(" ");
             }
         }
+        System.out.println(sb);
     }
 
-    static void boys(int x) {
-        for (int i = 0; i < lights.length; i++) {
+    static void male(int x, int switchNum) {
+        for (int i = 0; i < switchNum; i++) {
             if ((i + 1) % x == 0) {
-                lights[i] = changeColor(lights[i]);
+                changeState(i);
             }
         }
     }
 
-    static void girls(int x) {
+    static void female(int x, int switchNum) {
         x = x - 1;
-        int left = x - 1;
-        int right = x + 1;
-        while (isOnBoard(left, right)) {
-            if (lights[left] != lights[right]) {
+        changeState(x);
+        int first = x - 1;
+        int second = x + 1;
+
+        while (first >= 0 && second < switchNum) {
+            if (array[first] == array[second]) {
+                changeState(first);
+                changeState(second);
+                first -= 1;
+                second += 1;
+
+            } else {
                 break;
             }
-            left--;
-            right++;
-        }
-        for (int k = left + 1; k < right; k++) {
-            lights[k] = changeColor(lights[k]);
         }
     }
 
-    static int changeColor(int x) {
-        if (x == 0) {
-            return 1;
+    static void changeState(int x) {
+        if (array[x] == 1) {
+            array[x] = 0;
+        } else {
+            array[x] = 1;
         }
-        return 0;
-    }
-
-    static boolean isOnBoard(int first, int second) {
-        return first >= 0 && second < lights.length && (lights[first] == lights[second]);
     }
 }
