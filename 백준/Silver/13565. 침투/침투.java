@@ -46,20 +46,22 @@ public class Main {
             return true;
         }
 
-        for (int i = 0; i < movement.length; i++) {
-            int newY = movement[i][0] + y;
-            int newX = movement[i][1] + x;
-
-            if (isOnBoard(newY, newX) && !visited[newY][newX]) {
-                if (dfs(newY, newX)) {
-                    return true;
+        for (int[] ints : movement) {
+            int newY = ints[0] + y;
+            int newX = ints[1] + x;
+            if (isOnBoard(newY, newX)) {
+                if (board[newY][newX] && !visited[newY][newX]) {
+                    if (dfs(newY, newX)) {
+                        return true;
+                    }
                 }
             }
+
         }
         return false;
     }
 
     static boolean isOnBoard(int y, int x) {
-        return y >= 0 && x >= 0 && y < m && x < n && board[y][x];
+        return y >= 0 && x >= 0 && y < m && x < n;
     }
 }
