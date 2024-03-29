@@ -2,10 +2,7 @@ import java.util.*;
 import java.io.*;
 
 class Solution {
-    public int[] solution(int brown, int yellow) {
-        return calculateCarpet(brown, yellow);
-    }
-    public int[] calculateCarpet(int brown, int yellow){
+    public int[] solution(int brown, int yellow){
         int totalSize = brown + yellow;
         for(int i = 1; i < totalSize / 2 + 1; i++){
             if(totalSize % i == 0){
