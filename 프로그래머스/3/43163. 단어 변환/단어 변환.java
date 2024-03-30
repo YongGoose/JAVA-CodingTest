@@ -12,8 +12,6 @@ class Solution {
         if (!isWordsInArray) {
             return 0;
         }
-        //words target 확인
-
 
         Map<String, List<String>> graph = new HashMap<>();
 
@@ -36,7 +34,7 @@ class Solution {
                 graph.get(begin).add(word);
             }
         }
-        
+
         return bfs(begin, target, graph);
     }
 
@@ -62,7 +60,6 @@ class Solution {
                 queue.add(new State(word, state.cnt + 1));
             }
         }
-        System.out.println("!");
         return 0;
     }
 
@@ -70,11 +67,14 @@ class Solution {
         int length = s1.length();
         int cnt = 0;
         for (int i = 0; i < length; i++) {
-            if (s1.charAt(i) == s2.charAt(i)) {
+            if (s1.charAt(i) != s2.charAt(i)) {
                 cnt++;
             }
+            if (cnt >= 2) {
+                return false;
+            }
         }
-        return cnt == length - 1;
+        return true;
     }
 
     class State {
