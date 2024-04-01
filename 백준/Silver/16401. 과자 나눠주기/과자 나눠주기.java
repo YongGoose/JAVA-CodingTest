@@ -1,7 +1,6 @@
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.Arrays;
 import java.util.StringTokenizer;
 
 public class Main {
@@ -17,13 +16,9 @@ public class Main {
             snacks[i] = Integer.parseInt(st.nextToken());
         }
 
-        Arrays.sort(snacks);
-//        if (m <= n) {
-//            System.out.println(snacks[n - m]);
-//            return;
-//        }
-        System.out.println(binarySearch(snacks, m, 1, snacks[n - 1]));
-
+        // 정렬을 할 필요가 없음.
+        // 오히려 정렬을 하지 않고 과자 길이의 최대값인 1_000_000_000을 대입하면 시간이 500ms로 줄어드는 모습을 보임.
+        System.out.println(binarySearch(snacks, m, 1, 1_000_000_000));
     }
 
     public static int binarySearch(int[] array, int m, int left, int right) {
