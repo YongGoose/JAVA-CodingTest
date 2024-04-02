@@ -27,30 +27,27 @@ public class Main {
         int result = 0;
         while (left <= right) {
             int mid = (left + right) / 2;
-            if (isValid(mid, m)) {
+
+            int extraMoney = mid, count = 1;
+            for (int money : array) {
+                if (mid < money) {
+                    break;
+                }
+
+                if (extraMoney < money) {
+                    count++;
+                    extraMoney = mid;
+                }
+                extraMoney -= money;
+            }
+
+            if (count > m) {
+                left = mid + 1;
+            } else {
                 result = mid;
                 right = mid - 1;
-            } else {
-                left = mid + 1;
             }
         }
         return result;
-    }
-
-    static boolean isValid(int money, int m) {
-        int extraMoney = money;
-        int count = 1;
-
-        for (int mo : array) {
-            if (money < mo) {
-                return false;
-            }
-            if (extraMoney < mo) {
-                extraMoney = money;
-                count++;
-            }
-            extraMoney -= mo;
-        }
-        return m >= count;
     }
 }
