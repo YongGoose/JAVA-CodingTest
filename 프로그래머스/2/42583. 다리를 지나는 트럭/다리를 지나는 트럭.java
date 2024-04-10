@@ -4,6 +4,7 @@ class Solution {
     public int solution(int bridge_length, int weight, int[] truck_weights) {
         Queue<Integer> queue = new LinkedList<>();
         int answer = 0, sum = 0;
+        
         for (int truck : truck_weights) {
             while(true) {
                 if (queue.isEmpty()) {
@@ -16,7 +17,6 @@ class Solution {
                         sum -= queue.poll();
                     } else {
                         if (sum + truck > weight) {
-                            //앞으로 한 칸 가게 하는 방법
                             queue.add(0);
                             answer++;
                         } else {
