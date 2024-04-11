@@ -1,8 +1,8 @@
 import java.util.*;
 
 class Solution {
-    boolean[] visited;
-    Set<Integer> set = new HashSet<>();
+    private boolean[] visited;
+    private Set<Integer> set = new HashSet<>();
     public int solution(String numbers) {
         int answer = 0;
         visited = new boolean[numbers.length()];
