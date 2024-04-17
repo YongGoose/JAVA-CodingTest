@@ -26,7 +26,9 @@ public class Main {
                     array[i][j] = Integer.parseInt(st.nextToken());
                 }
             }
-            System.out.println("Problem " + cnt++ + ": " + bfs(array, testCase));
+            StringBuilder sb = new StringBuilder();
+            sb.append("Problem ").append(cnt++).append(": ").append(bfs(array, testCase));
+            System.out.println(sb);
         }
     }
 
