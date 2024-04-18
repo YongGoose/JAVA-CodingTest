@@ -51,12 +51,14 @@ public class Main {
 
         while (!pq.isEmpty()) {
             Node node = pq.poll();
-            visited[node.end] = true;
+            if (!visited[node.end]) {
+                visited[node.end] = true;
+            }
 
             for (Node gNode : nodes[node.end]) {
-                if (resultArray[gNode.end] > resultArray[node.end] + gNode.value) {
+                if (!visited[gNode.end] && resultArray[gNode.end] > resultArray[node.end] + gNode.value) {
                     resultArray[gNode.end] = resultArray[node.end] + gNode.value;
-                    pq.add(new Node(gNode.end, gNode.value));
+                    pq.add(new Node(gNode.end, resultArray[gNode.end]));
                 }
             }
         }
