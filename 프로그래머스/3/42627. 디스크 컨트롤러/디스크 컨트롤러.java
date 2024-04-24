@@ -4,7 +4,6 @@ class Solution {
     public int solution(int[][] jobs) {
         
         Arrays.sort(jobs, (o1, o2) -> o1[0] - o2[0]);
-        
         PriorityQueue<int[]> jobQueue = new PriorityQueue<>((o1, o2) -> o1[1] - o2[1]);
         
         int idx = 0, answer = 0, cnt = 0, end = 0;;
