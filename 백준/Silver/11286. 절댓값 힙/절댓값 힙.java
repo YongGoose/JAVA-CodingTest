@@ -1,43 +1,46 @@
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.ArrayDeque;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.Deque;
-import java.util.LinkedList;
-import java.util.List;
 import java.util.PriorityQueue;
-import java.util.Queue;
-import java.util.Stack;
 import java.util.StringTokenizer;
 
 public class Main {
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         StringTokenizer st = new StringTokenizer(br.readLine());
-        int range = Integer.parseInt(st.nextToken());
+        StringBuilder sb = new StringBuilder();
 
-        Comparator<Integer> comparator = Comparator
-                .comparingInt((Integer num) -> Math.abs(num))
-                .thenComparing(num -> num);
-
-        PriorityQueue<Integer> priorityQueue = new PriorityQueue<>(comparator);
-
-        for (int i = 0; i < range; i++) {
+        int testCase = Integer.parseInt(st.nextToken());
+        PriorityQueue<Number> pq = new PriorityQueue<>();
+        for (int i = 0; i < testCase; i++) {
             st = new StringTokenizer(br.readLine());
-            int number = Integer.parseInt(st.nextToken());
-            if (number == 0) {
-                if (priorityQueue.isEmpty()) {
-                    System.out.println("0");
+            int input = Integer.parseInt(st.nextToken());
+
+            if (input == 0) {
+                if (pq.isEmpty()) {
+                    sb.append(0).append("\n");
                 } else {
-                    System.out.println(priorityQueue.remove());
+                    sb.append(pq.poll().number).append("\n");
                 }
-            } else {
-                priorityQueue.add(number);
+                continue;
             }
+            pq.add(new Number(input));
+        }
+        System.out.println(sb);
+    }
+
+    static class Number implements Comparable<Number> {
+        public Number(int number) {
+            this.number = number;
+        }
+
+        int number;
+        @Override
+        public int compareTo(Number o) {
+            if (Math.abs(this.number) == Math.abs(o.number)) {
+                return this.number - o.number;
+            }
+            return Math.abs(this.number) - Math.abs(o.number);
         }
     }
 }
