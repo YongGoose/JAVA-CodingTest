@@ -11,7 +11,7 @@ public class Main {
     static int[] dx = {1, -1, 0, 0};
     static int[] dy = {0, 0, 1, -1};
     static int y, x;
-    static ArrayList<int[]> clearNumber = new ArrayList<>();
+    static ArrayList<int[]> clearNumbers = new ArrayList<>();
 
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
@@ -34,12 +34,11 @@ public class Main {
             for (int i = 0; i < cheezeArray.length; i++) {
                 for (int j = 0; j < cheezeArray[0].length; j++) {
                     if (!cheezeArray[i][j] && !visited[i][j]) {
-                        if (checkArray(i, j)) {
-                            bfs(visited, i, j);
-                        }
+                        bfs(visited, i, j);
                     }
                 }
             }
+
             int size = removeCheeze();
             if (!checkCheezeExists()) {
                 result = size;
@@ -48,39 +47,6 @@ public class Main {
             cnt++;
         }
         System.out.println(cnt + "\n" + result);
-    }
-
-    static boolean checkArray(int cy, int cx) {
-        boolean[][] preVisited = new boolean[y][x];
-        preVisited[cy][cx] = true;
-        Queue<int[]> queue = new LinkedList<>();
-        queue.add(new int[]{cy, cx});
-
-        while (!queue.isEmpty()) {
-            int[] node = queue.poll();
-            int qy = node[0];
-            int qx = node[1];
-
-            if (qy == 0 || qx == 0) {
-                return true;
-            }
-            for (int i = 0; i < 4; i++) {
-                int ny = qy + dy[i];
-                int nx = qx + dx[i];
-                if (!isOnBoard(ny, nx)) {
-                    continue;
-                }
-
-                if (!preVisited[ny][nx]) {
-                    if (!cheezeArray[ny][nx]) {
-                        queue.add(new int[]{ny, nx});
-                    }
-                    preVisited[ny][nx] = true;
-
-                }
-            }
-        }
-        return false;
     }
 
     static boolean checkCheezeExists() {
@@ -95,22 +61,31 @@ public class Main {
     }
 
     static int removeCheeze() {
-        int size = clearNumber.size();
+        int size = clearNumbers.size();
 
-        for (int[] remove : clearNumber) {
+        for (int[] remove : clearNumbers) {
             cheezeArray[remove[0]][remove[1]] = false;
         }
-        clearNumber.clear();
+        clearNumbers.clear();
         return size;
     }
 
     static void bfs(boolean[][] visited, int y, int x) {
-        visited[y][x] = true;
+        boolean isFlag = false;
+        ArrayList<int[]> clearNumber = new ArrayList<>();
         Queue<int[]> queue = new LinkedList<>();
         queue.add(new int[]{y, x});
 
         while (!queue.isEmpty()) {
             int[] node = queue.poll();
+
+            if (node[0] == 0 || node[1] == 0) {
+                isFlag = true;
+            }
+
+            if (!visited[node[0]][node[1]]) {
+                visited[node[0]][node[1]] = true;
+            }
 
             for (int i = 0; i < 4; i++) {
                 int ny = node[0] + dy[i];
@@ -128,6 +103,9 @@ public class Main {
                     visited[ny][nx] = true;
                 }
             }
+        }
+        if (isFlag) {
+            clearNumbers.addAll(clearNumber);
         }
     }
 
