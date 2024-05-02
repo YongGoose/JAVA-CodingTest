@@ -19,7 +19,6 @@ class Solution {
                 diff++;
             }
 
-            System.out.println(same + " " + diff);
             if (same == diff) {
                 st = i + 1;
                 answer += 1;
