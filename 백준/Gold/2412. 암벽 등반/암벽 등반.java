@@ -97,8 +97,8 @@ public class Main {
         int n = Integer.parseInt(st.nextToken());
         int t = Integer.parseInt(st.nextToken());
 
-        nodes = new ArrayList[200_001];
-        for (int i = 0; i < 200_001; i++) {
+        nodes = new ArrayList[n];
+        for (int i = 0; i < n; i++) {
             nodes[i] = new ArrayList<>();
         }
 
@@ -109,7 +109,7 @@ public class Main {
 
             nodes[y].add(x);
         }
-        for (int i = 0; i < 200_001; i++) {
+        for (int i = 0; i < n; i++) {
             Collections.sort(nodes[i]);
         }
         System.out.println(bfs(t));
@@ -117,16 +117,15 @@ public class Main {
 
     static int bfs(int t) {
         Queue<Node> queue = new LinkedList<>();
-        queue.add(new Node(0, 0));
+        queue.add(new Node(0, 0, 0));
 
-        int cnt = 0;
         while (!queue.isEmpty()) {
 
             int size = queue.size();
             for (int z = 0; z < size; z++) {
                 Node node = queue.poll();
                 if (node.y == t) {
-                    return cnt;
+                    return node.cnt;
                 }
                 int my = node.y - 2;
                 int py = node.y + 2;
@@ -147,13 +146,12 @@ public class Main {
                         if (Math.abs(nodes[i].get(j) - node.x) <= 2) {
                             int x = nodes[i].remove(j);
 
-                            queue.add(new Node(i, x));
+                            queue.add(new Node(i, x, node.cnt + 1));
                             j--;
                         }
                     }
                 }
             }
-            cnt++;
         }
         return -1;
     }
@@ -161,10 +159,12 @@ public class Main {
     static class Node {
         int y;
         int x;
+        int cnt;
 
-        public Node(int y, int x) {
+        public Node(int y, int x, int cnt) {
             this.y = y;
             this.x = x;
+            this.cnt = cnt;
         }
     }
 }
