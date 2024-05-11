@@ -36,6 +36,7 @@ public class Main {
     static void dfs(int start, int target) {
         if (start == numbers[target]) {
             result.add(start);
+            return;
         }
 
         if (!visited[numbers[target]]) {
