@@ -1,7 +1,6 @@
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.Arrays;
 import java.util.StringTokenizer;
 
 public class Main {
@@ -16,6 +15,8 @@ public class Main {
 		while (testCase-- > 0) {
 			st = new StringTokenizer(br.readLine());
 			word = st.nextToken().toCharArray();
+			
+			//문자열의 최대 길이가 100_000이므로 알파벳으로 방문 여부를 구해야 한다.
 			visited = new int[26];
 
 			for (char w : word) {
