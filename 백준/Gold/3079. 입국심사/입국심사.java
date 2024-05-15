@@ -15,18 +15,22 @@ public class Main {
 		int m = Integer.parseInt(st.nextToken());
 
 		times = new long[n];
+		long maxValue = 0;
+		
 		for (int i = 0; i < n; i++) {
 			st = new StringTokenizer(br.readLine());
-			times[i] = Long.parseLong(st.nextToken());
+			long input = Long.parseLong(st.nextToken());
+			
+			maxValue = Math.max(maxValue, input);
+			times[i] = input;
 		}
-		Arrays.sort(times);
-		System.out.println(binarySearch(m));
+		System.out.println(binarySearch(m, maxValue));
 	}
 
-	static long binarySearch(int m) {
+	static long binarySearch(int m, long maxValue) {
 		long start = 0;
-		long end = times[times.length - 1] * m;
-		long result = Long.MAX_VALUE;
+		long end = maxValue * m;
+		long result = 0;
 		while (start <= end) {
 			long mid = (start + end) / 2;
 
@@ -34,7 +38,7 @@ public class Main {
 			if (cnt < m) {
 				start = mid + 1;
 			} else {
-				result = Math.min(result, mid);
+				result = mid;
 				end = mid - 1;
 			}
 		}
@@ -47,7 +51,6 @@ public class Main {
 			if (cnt >= m) {
 				break;
 			}
-
 			cnt += (time / t);
 		}
 		return cnt;
