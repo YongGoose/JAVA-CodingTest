@@ -16,11 +16,11 @@ public class Main {
 
 		times = new long[n];
 		long maxValue = 0;
-		
+
 		for (int i = 0; i < n; i++) {
 			st = new StringTokenizer(br.readLine());
 			long input = Long.parseLong(st.nextToken());
-			
+
 			maxValue = Math.max(maxValue, input);
 			times[i] = input;
 		}
@@ -48,10 +48,11 @@ public class Main {
 	static long calculatePerson(long time, int m) {
 		long cnt = 0;
 		for (long t : times) {
+			cnt += (time / t);
+
 			if (cnt >= m) {
 				break;
 			}
-			cnt += (time / t);
 		}
 		return cnt;
 	}
