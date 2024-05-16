@@ -20,7 +20,7 @@ class Solution {
         while(start <= end) {
             int mid = (start + end) / 2;
              
-            int cnt = calculateStone(mid, btrocks);
+            int cnt = calculateStone(mid, btrocks, n);
             if(cnt > n) {
                 end = mid - 1;
             } else {
@@ -31,17 +31,20 @@ class Solution {
         }
         return answer;
     }
-    private int calculateStone(int mid, int[] btrocks) {
+    private int calculateStone(int mid, int[] btrocks, int n) {
         int sum = 0;
         int cnt = 0;
         for(int i = 0; i < btrocks.length; i++) {
+            if(cnt > n) {
+                break;
+            }
+            
             sum += btrocks[i];
             if(sum < mid) {
                 cnt++;
                 continue;
             }
             sum = 0;
-            
         }
         return cnt;
     }
