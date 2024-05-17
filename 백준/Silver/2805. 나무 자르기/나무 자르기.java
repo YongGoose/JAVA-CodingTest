@@ -1,7 +1,6 @@
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.security.spec.RSAOtherPrimeInfo;
 import java.util.Arrays;
 import java.util.StringTokenizer;
 
@@ -25,7 +24,7 @@ public class Main {
 		Arrays.sort(trees);
 
 		int start = 0;
-		int end = trees[trees.length - 1] + 1;
+		int end = trees[trees.length - 1];
 		int result = 0;
 		while (start <= end) {
 			int mid = (start + end) / 2;
@@ -45,7 +44,7 @@ public class Main {
 	static long removeTrees(int mid) {
 		long cnt = 0;
 		for (int tree : trees) {
-			if (cnt > m) {
+			if (cnt >= m) {
 				return cnt;
 			}
 			if (tree > mid) {
