@@ -1,7 +1,7 @@
 import java.io.*;
 import java.util.*;
 
-public class Main {
+public class 나무_섭지 {
 
 	private static int[][] map;
 	private static ArrayList<Ghost> ghosts = new ArrayList<>();
