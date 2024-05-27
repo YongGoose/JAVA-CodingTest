@@ -1,19 +1,26 @@
 
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
 import java.util.Scanner;
+import java.util.StringTokenizer;
+
+import javax.print.attribute.IntegerSyntax;
 
 class Solution {
 	public static void main(String args[]) throws Exception {
-		Scanner sc = new Scanner(System.in);
+		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 
 		for (int idx = 1; idx <= 10; idx++) {
+			StringTokenizer st = new StringTokenizer(br.readLine());
 
 			int T;
-			T = sc.nextInt();
+			T = Integer.parseInt(st.nextToken());
 
 			int[] buildings = new int[T + 1];
 
+			st = new StringTokenizer(br.readLine());
 			for (int test_case = 0; test_case < T; test_case++) {
-				buildings[test_case] = sc.nextInt();
+				buildings[test_case] = Integer.parseInt(st.nextToken());
 			}
 
 			int result = 0;
