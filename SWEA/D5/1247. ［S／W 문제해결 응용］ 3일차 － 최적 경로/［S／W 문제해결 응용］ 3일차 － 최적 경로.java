@@ -3,7 +3,6 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.StringTokenizer;
 
-import javax.print.attribute.IntegerSyntax;
 
 public class Solution {
 	static int[][] routes;
@@ -37,6 +36,9 @@ public class Solution {
 	}
 
 	static void dfs(int depth, int value, int cur[]) {
+		if (value > result) {
+			return;
+		}
 		if (depth == n) {
 			int res = Math.abs(cur[0] - routes[1][0]) + Math.abs(cur[1] - routes[1][1]);
 			result = Math.min(res + value, result);
