@@ -2,6 +2,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.Set;
 import java.util.StringTokenizer;
 
@@ -38,8 +39,10 @@ public class Solution {
 	static void addNumbers(int num) {
 		HashSet<Integer> newSet = (HashSet<Integer>)set.clone();
 
-		for (Integer integer : newSet) {
-			set.add(integer + num);
+		Iterator<Integer> ite = newSet.iterator();
+
+		while (ite.hasNext()) {
+			set.add(ite.next() + num);
 		}
 	}
 }
