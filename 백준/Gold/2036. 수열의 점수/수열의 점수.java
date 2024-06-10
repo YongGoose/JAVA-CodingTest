@@ -32,7 +32,6 @@ public class Main {
 		Collections.sort(negative);
 
 		calculateNumber(positive, true);
-
 		calculateNumber(negative, false);
 
 		System.out.println(result);
@@ -45,11 +44,7 @@ public class Main {
 			long first = list.get(i);
 			long second = list.get(i - 1);
 
-			if (isPositive) {
-				result += Math.max(first * second, first + second);
-			} else {
-				result += first * second;
-			}
+			result += (first * second);
 		}
 
 		if (length % 2 == 1) {
