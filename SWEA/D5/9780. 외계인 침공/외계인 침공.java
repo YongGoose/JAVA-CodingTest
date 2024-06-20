@@ -13,20 +13,21 @@ public class Solution {
 			st = new StringTokenizer(br.readLine());
 			int n = Integer.parseInt(st.nextToken());
 
-			int[] array = new int[1_000_000];
+			long[] array = new long[1_000_000];
 			st = new StringTokenizer(br.readLine());
-			for (int i = 0; i < n; i++) {
-				array[i] = Integer.parseInt(st.nextToken());
+
+			if (n == 1) {
+				System.out.println("#" + number + " " + Integer.parseInt(st.nextToken()));
+				continue;
 			}
 
-			long[] dp = new long[1_000_000];
-			dp[0] = array[0];
-			dp[1] = Math.max(array[0], array[1]);
+			array[0] = Integer.parseInt(st.nextToken());
+			array[1] = Math.max(array[0], Integer.parseInt(st.nextToken()));
 
 			for (int i = 2; i < n; i++) {
-				dp[i] = Math.max(dp[i - 2] + array[i], dp[i - 1]);
+				array[i] = Math.max(Integer.parseInt(st.nextToken()) + array[i - 2], array[i - 1]);
 			}
-			System.out.println("#" + number + " " + dp[n - 1]);
+			System.out.println("#" + number + " " + array[n - 1]);
 		}
 	}
 }
