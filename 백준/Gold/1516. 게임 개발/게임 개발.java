@@ -14,7 +14,6 @@ public class Main {
 		int testCase = Integer.parseInt(br.readLine());
 		resultArray = new int[testCase + 1];
 		dataArray = new int[testCase + 1][500];
-		
 
 		for (int i = 0; i < testCase; i++) {
 			st = new StringTokenizer(br.readLine());
