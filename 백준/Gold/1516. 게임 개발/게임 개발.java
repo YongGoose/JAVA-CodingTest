@@ -1,13 +1,11 @@
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.ArrayList;
 import java.util.StringTokenizer;
 
 public class Main {
 	private static int[] resultArray;
-	private static int[] dataArray;
-	private static ArrayList<Integer>[] datas;
+	private static int[][] dataArray;
 
 	public static void main(String[] args) throws IOException {
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
@@ -15,19 +13,16 @@ public class Main {
 
 		int testCase = Integer.parseInt(br.readLine());
 		resultArray = new int[testCase + 1];
-		datas = new ArrayList[testCase + 1];
-		dataArray = new int[testCase + 1];
-
-		for (int i = 1; i < testCase + 1; i++) {
-			datas[i] = new ArrayList<>();
-		}
+		dataArray = new int[testCase + 1][500];
+		
 
 		for (int i = 0; i < testCase; i++) {
 			st = new StringTokenizer(br.readLine());
-			dataArray[i + 1] = Integer.parseInt(st.nextToken());
+			dataArray[i + 1][0] = Integer.parseInt(st.nextToken());
 			String input = st.nextToken();
+			int idx = 1;
 			while (!input.equals("-1")) {
-				datas[i + 1].add(Integer.parseInt(input));
+				dataArray[i + 1][idx++] = Integer.parseInt(input);
 				input = st.nextToken();
 			}
 		}
@@ -44,11 +39,11 @@ public class Main {
 			return resultArray[n];
 		}
 
-		ArrayList<Integer> integers = datas[n];
+		int[] ints = dataArray[n];
 		int semi = 0;
-		for (int i : integers) {
-			semi = Math.max(dp(i), semi);
+		for (int i = 1; ints[i] != 0; i++) {
+			semi = Math.max(dp(ints[i]), semi);
 		}
-		return resultArray[n] = semi + dataArray[n];
+		return resultArray[n] = semi + dataArray[n][0];
 	}
 }
