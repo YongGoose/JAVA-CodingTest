@@ -10,7 +10,7 @@ import java.util.StringTokenizer;
 
 public class Main {
 	private static String[] words;
-	private static Set<String> result = new HashSet<>();
+	private static ArrayList<String> result = new ArrayList<>();
 	private static int l, c;
 
 	public static void main(String[] args) throws IOException {
@@ -30,10 +30,8 @@ public class Main {
 		for (int i = 0; i < c - 3; i++) {
 			backTracking(1, i, new boolean[c], words[i]);
 		}
-		ArrayList<String> resultArray = new ArrayList<>(result);
-		Collections.sort(resultArray);
-
-		resultArray.forEach(System.out::println);
+		Collections.sort(result);
+		result.forEach(System.out::println);
 	}
 
 	private static void backTracking(int depth, int idx, boolean[] visited, String res) {
