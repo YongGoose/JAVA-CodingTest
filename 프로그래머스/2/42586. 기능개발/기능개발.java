@@ -14,10 +14,6 @@ class Solution {
 				int cnt = 1;
 				queue.poll();
 
-				if (queue.isEmpty()) {
-					result.add(cnt);
-					break;
-				}
 				while(!queue.isEmpty()) {
 					if(queue.peek().progress >= 100) {
 						queue.poll();
