@@ -18,6 +18,8 @@ class Solution {
             System.out.println("cnt : " + cnt + " i : " + i);
             if(cnt >= i) {
                 result = i;
+            } else {
+                break;
             }
         }
         return result;
