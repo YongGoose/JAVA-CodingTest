@@ -8,21 +8,15 @@ class Solution {
             .forEach(pq::add);
         
         int cnt = 0;
-        while(pq.size() > 1) {
-            if(pq.peek() >= K) {
-                break;
-            }
+        while(pq.size() > 1 && pq.peek() < K) {
             cnt++;
-            int num = calculate(pq.poll(), pq.poll());
-            pq.offer(num);
+            pq.offer(calculate(pq.poll(), pq.poll()));
         }
         
-        if(pq.peek() < K) {
-            return -1;
-        }
-        
-        return cnt;
+        return pq.peek() >= K ? cnt : -1;
     }
+    
+    
     public int calculate(int first, int second) {
         return first + second * 2;
     }
