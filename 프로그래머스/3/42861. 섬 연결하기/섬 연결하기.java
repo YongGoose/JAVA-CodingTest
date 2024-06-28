@@ -19,10 +19,10 @@ class Solution {
         for(int i = 0; i < costs.length; i++) {
             Node node = nodes.poll();
             
-            int to = node.to;
-            int from = node.from;
+            int to = findParent(node.to);
+            int from = findParent(node.from);
             
-            if(findParent(to) != findParent(from)) {
+            if(to != from) {
                 union(to,from);
                 result += node.value;
             }
@@ -30,10 +30,7 @@ class Solution {
         return result;
     }
     
-    private void union(int first, int second) {
-        first = findParent(first);
-        second = findParent(second);
-        
+    private void union(int first, int second) {        
         if(first >= second) {
             parent[second] = first;
         } else {
