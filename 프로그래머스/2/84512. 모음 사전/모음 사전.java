@@ -1,18 +1,18 @@
 import java.util.*;
 
 class Solution {
-    private ArrayList<String> strings = new ArrayList<>();
+    private Map<String, Integer> strings = new HashMap<>();
     private String[] w = {"A","E","I","O","U"};
+    private int idx;
     public int solution(String word) {
         backTracking(0,"");
         
-        Collections.sort(strings);
-        return strings.indexOf(word) + 1;
+        return strings.get(word) + 1;
     }
     
     private void backTracking (int depth, String word) {
         if(depth <= 5 && depth > 0) {
-            strings.add(word);
+            strings.put(word, idx++);
         } else if (depth > 5) {
             return;
         }
