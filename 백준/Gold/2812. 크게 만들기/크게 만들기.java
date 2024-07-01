@@ -1,6 +1,8 @@
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.ArrayDeque;
+import java.util.Deque;
 import java.util.Stack;
 import java.util.StringTokenizer;
 
@@ -13,20 +15,19 @@ public class Main {
 		int k = Integer.parseInt(st.nextToken());
 
 		char[] inputArray = br.readLine().toCharArray();
-		Stack<Character> stack = new Stack<>();
+		Deque<Character> deque = new ArrayDeque<>();
 
 		for (int i = 0; i < n; i++) {
-			while (k > 0 && !stack.isEmpty() && stack.peek() < inputArray[i]) {
-				stack.pop();
+			while (k > 0 && !deque.isEmpty() && deque.peekLast() < inputArray[i]) {
+				deque.pollLast();
 				k--;
 			}
-			stack.add(inputArray[i]);
+			deque.add(inputArray[i]);
 		}
+
 		StringBuilder sb = new StringBuilder();
-		int idx = 0;
-		while (stack.size() > k) {
-			sb.append(stack.get(idx++));
-			k++;
+		while (deque.size() > k) {
+			sb.append(deque.pop());
 		}
 		System.out.println(sb);
 	}
