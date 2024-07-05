@@ -21,14 +21,13 @@ public class Main {
 		for (int i = 0; i < r; i++) {
 			board[i] = br.readLine().toCharArray();
 		}
-		Set<Character> set = new HashSet<>();
-		set.add(board[0][0]);
-		backTracking(1, set, new int[] {0,0});
-
+		boolean[] alpha = new boolean[26];
+		alpha[board[0][0] - 'A'] = true;
+		backTracking(1,alpha, new int[] {0, 0});
 		System.out.println(result);
 	}
 
-	private static void backTracking(int depth, Set<Character> set, int[] player) {
+	private static void backTracking(int depth, boolean[] alphabet, int[] player) {
 		boolean isFlag = false;
 		for (int i = 0; i < 4; i++) {
 			int ny = player[0] + dMoves[i][0];
@@ -40,20 +39,18 @@ public class Main {
 
 			char currentCharacter = board[ny][nx];
 
-			if (set.contains(currentCharacter)) {
+			if (alphabet[currentCharacter - 'A']) {
 				continue;
 			}
-			set.add(currentCharacter);
+			alphabet[currentCharacter - 'A'] = true;
 			isFlag = true;
 
-			backTracking(depth + 1, set, new int[] {ny, nx});
-
-			set.remove(currentCharacter);
+			backTracking(depth + 1, alphabet, new int[] {ny, nx});
+			alphabet[currentCharacter - 'A'] = false;
 		}
 
 		if (!isFlag) {
 			result = Math.max(result, depth);
-			return;
 		}
 	}
 
