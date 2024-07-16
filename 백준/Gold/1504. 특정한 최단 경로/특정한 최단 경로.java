@@ -4,96 +4,119 @@ import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.PriorityQueue;
+import java.util.StringTokenizer;
 
 public class Main {
-    private static class Node implements Comparable<Node> {
-        int to;
-        int cost;
+	private static class Node implements Comparable<Node>{
+		int to;
+		int cost;
 
-        public Node(int to, int cost) {
-            this.to = to;
-            this.cost = cost;
-        }
+		public Node(int to, int cost) {
+			this.to = to;
+			this.cost = cost;
+		}
 
-        @Override
-        public int compareTo(Node o) {
-            return this.cost - o.cost;
-        }
-    }
+		@Override
+		public int compareTo(Node o) {
+			return this.cost - o.cost;
+		}
+	}
 
-    private static ArrayList<ArrayList<Node>> nodes = new ArrayList<>();
-    private static int n, e;
+	private static ArrayList<ArrayList<Node>> nodes = new ArrayList<>();
+	private static boolean[] visited;
+	private static int n, e;
+	public static void main(String[] args) throws IOException {
+		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+		StringTokenizer st = new StringTokenizer(br.readLine());
 
-    public static void main(String[] args) throws IOException {
-        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-        String[] input = br.readLine().split(" ");
+		n = Integer.parseInt(st.nextToken());
+		e = Integer.parseInt(st.nextToken());
 
-        n = Integer.parseInt(input[0]);
-        e = Integer.parseInt(input[1]);
+		for (int i = 0; i < n + 1; i++) {
+			nodes.add(new ArrayList<>());
+		}
+		for (int i = 0; i < e; i++) {
+			st = new StringTokenizer(br.readLine());
 
-        for (int i = 0; i <= n; i++) {
-            nodes.add(new ArrayList<>());
-        }
-        for (int i = 0; i < e; i++) {
-            input = br.readLine().split(" ");
-            int a = Integer.parseInt(input[0]);
-            int b = Integer.parseInt(input[1]);
-            int c = Integer.parseInt(input[2]);
+			int a = Integer.parseInt(st.nextToken());
+			int b = Integer.parseInt(st.nextToken());
+			int c = Integer.parseInt(st.nextToken());
 
-            nodes.get(a).add(new Node(b, c));
-            nodes.get(b).add(new Node(a, c));
-        }
+			nodes.get(a).add(new Node(b, c));
+			nodes.get(b).add(new Node(a, c));
+		}
 
-        input = br.readLine().split(" ");
-        int v1 = Integer.parseInt(input[0]);
-        int v2 = Integer.parseInt(input[1]);
+		st = new StringTokenizer(br.readLine());
+		int v1 = Integer.parseInt(st.nextToken());
+		int v2 = Integer.parseInt(st.nextToken());
 
-        int oneToV1 = dijkstra(1, v1);
-        int oneToV2 = dijkstra(1, v2);
-        int v1ToV2 = dijkstra(v1, v2);
-        int v1ToN = dijkstra(v1, n);
-        int v2ToN = dijkstra(v2, n);
+		int[] costs = new int[n + 1];
 
-        long result = Long.MAX_VALUE;
-        boolean flag = false;
+		// 1 -> v1
+		int oneToV1 = djistra(1, v1, costs);
 
-        if (oneToV1 != Integer.MAX_VALUE && v1ToV2 != Integer.MAX_VALUE && v2ToN != Integer.MAX_VALUE) {
-            flag = true;
-            result = Math.min(result, (long)oneToV1 + v1ToV2 + v2ToN);
-        }
+		// 1 -> v2
+		int oneToV2 = djistra(1, v2, costs);
 
-        if (oneToV2 != Integer.MAX_VALUE && v1ToV2 != Integer.MAX_VALUE && v1ToN != Integer.MAX_VALUE) {
-            flag = true;
-            result = Math.min(result, (long)oneToV2 + v1ToV2 + v1ToN);
-        }
+		// v1 -> v2
+		int v1ToV2 = djistra(v1, v2, costs);
 
-        System.out.println(flag ? result : -1);
-    }
-    
-    private static int dijkstra(int from, int to) {
-        boolean[] visited = new boolean[n + 1];
-        int[] costs = new int[n + 1];
-        Arrays.fill(costs, Integer.MAX_VALUE);
-        costs[from] = 0;
-        
-        PriorityQueue<Node> pq = new PriorityQueue<>();
-        pq.add(new Node(from, 0));
+		// v2 -> v1
+		int v2ToV1 = djistra(v2, v1, costs);
 
-        while (!pq.isEmpty()) {
-            Node node = pq.poll();
+		// v1 -> n
+		int v1ToN = djistra(v1, n, costs);
 
-            if (node.to == to) return node.cost;
+		// v2 -> n
+		int v2ToN = djistra(v2, n, costs);
 
-            if (visited[node.to]) continue;
-            visited[node.to] = true;
+		int result = Integer.MAX_VALUE;
+		boolean flag = false;
+		// 1 -> v1 -> v2 -> n
+		if (oneToV1 != Integer.MAX_VALUE && v1ToV2 != Integer.MAX_VALUE && v2ToN != Integer.MAX_VALUE) {
+			flag = true;
+			result = Math.min(result, oneToV1 + v1ToV2 + v2ToN);
+		}
 
-            for (Node n : nodes.get(node.to)) {
-                if (!visited[n.to] && costs[n.to] > costs[node.to] + n.cost) {
-                    costs[n.to] = costs[node.to] + n.cost;
-                    pq.offer(new Node(n.to, costs[n.to]));
-                }
-            }
-        }
-        return costs[to];
-    }
+		// 1 -> v2 -> v1 -> n
+		if (oneToV2 != Integer.MAX_VALUE && v2ToV1 != Integer.MAX_VALUE && v1ToN != Integer.MAX_VALUE) {
+			flag = true;
+			result = Math.min(result, oneToV2 + v2ToV1 + v1ToN);
+		}
+
+		if (!flag) {
+			System.out.println("-1");
+			return;
+		}
+		System.out.println(result);
+	}
+	
+	private static int djistra(int from, int to, int[] costs) {
+		visited = new boolean[n + 1];
+		Arrays.fill(costs, Integer.MAX_VALUE);
+		costs[from] = 0;
+		
+		PriorityQueue<Node> pq = new PriorityQueue<>();
+		pq.add(new Node(from, 0));
+
+		while (!pq.isEmpty()) {
+			Node node = pq.poll();
+
+			if (node.to == to) {
+				return costs[node.to];
+			}
+
+			if (!visited[node.to]) {
+				visited[node.to] = true;
+			}
+
+			for (Node n : nodes.get(node.to)) {
+				if (!visited[n.to] && costs[n.to] > costs[node.to] + n.cost) {
+					costs[n.to] = costs[node.to] + n.cost;
+					pq.offer(new Node(n.to, costs[n.to]));
+				}
+			}
+		}
+		return costs[to];
+	}
 }
