@@ -20,39 +20,29 @@ public class Main {
 
 		int[][] maxNums = new int[n][3];
 		maxNums[0] = nums[0];
+		int[][] minNums = new int[n][3];
+		minNums[0] = nums[0];
 		for (int i = 1; i < n; i++) {
 			for (int j = 0; j < 3; j++) {
 				if (j == 0) {
 					maxNums[i][j] = nums[i][j] + Math.max(maxNums[i - 1][0], maxNums[i - 1][1]);
+					minNums[i][j] = nums[i][j] + Math.min(minNums[i - 1][0], minNums[i - 1][1]);
+
 					continue;
 				}
 
 				if (j == 1) {
 					maxNums[i][j] =
 						nums[i][j] + Math.max(maxNums[i - 1][0], Math.max(maxNums[i - 1][1], maxNums[i - 1][2]));
-					continue;
-				}
-				maxNums[i][j] = nums[i][j] + Math.max(maxNums[i - 1][1], maxNums[i - 1][2]);
-			}
-		}
-
-		int[][] minNums = new int[n][3];
-		minNums[0] = nums[0];
-		for (int i = 1; i < n; i++) {
-			for (int j = 0; j < 3; j++) {
-				if (j == 0) {
-					minNums[i][j] = nums[i][j] + Math.min(minNums[i - 1][0], minNums[i - 1][1]);
-					continue;
-				}
-
-				if (j == 1) {
 					minNums[i][j] =
 						nums[i][j] + Math.min(minNums[i - 1][0], Math.min(minNums[i - 1][1], minNums[i - 1][2]));
 					continue;
 				}
+				maxNums[i][j] = nums[i][j] + Math.max(maxNums[i - 1][1], maxNums[i - 1][2]);
 				minNums[i][j] = nums[i][j] + Math.min(minNums[i - 1][1], minNums[i - 1][2]);
 			}
 		}
+
 
 		StringBuilder sb = new StringBuilder();
 		int result = 0;
