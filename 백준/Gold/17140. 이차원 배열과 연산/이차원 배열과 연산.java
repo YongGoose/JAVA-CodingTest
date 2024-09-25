@@ -27,8 +27,8 @@ public class Main {
 	}
 
 	private static int[][] map = new int[101][101];
-	private static int yLength = 3;
 	private static int xLength = 3;
+	private static int yLength = 3;
 
 	public static void main(String[] args) throws IOException {
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
@@ -53,12 +53,12 @@ public class Main {
 				return;
 			}
 
-			if (xLength >= yLength) {
-				for (int i = 1; i <= xLength; i++) {
+			if (yLength >= xLength) {
+				for (int i = 1; i <= yLength; i++) {
 					R(i);
 				}
 			} else {
-				for (int i = 1; i <= yLength; i++) {
+				for (int i = 1; i <= xLength; i++) {
 					C(i);
 				}
 			}
@@ -66,12 +66,11 @@ public class Main {
 		System.out.println(-1);
 	}
 
-	// 행을 정렬할 때
 	static void R(int key) {
 		PriorityQueue<Pair> pq = new PriorityQueue<>();
 		Map<Integer, Integer> hashMap = new HashMap<>();
 
-		for (int i = 1; i <= yLength; i++) {
+		for (int i = 1; i <= xLength; i++) {
 			if (map[key][i] == 0)
 				continue;
 			hashMap.compute(map[key][i], (num, count) -> count == null ? 1 : count + 1);
@@ -86,7 +85,7 @@ public class Main {
 			map[key][i++] = p.count;
 		}
 
-		yLength = Math.max(yLength, i);
+		xLength = Math.max(xLength, i);
 
 		while (i <= 99) {
 			map[key][i++] = 0;
@@ -98,7 +97,7 @@ public class Main {
 		PriorityQueue<Pair> pq = new PriorityQueue<>();
 		Map<Integer, Integer> hashmap = new HashMap<>();
 
-		for (int i = 1; i <= xLength; i++) {
+		for (int i = 1; i <= yLength; i++) {
 			if (map[i][key] == 0)
 				continue;
 			hashmap.compute(map[i][key], (num, count) -> count == null ? 1 : count + 1);
@@ -113,7 +112,7 @@ public class Main {
 			map[i++][key] = p.count;
 		}
 
-		xLength = Math.max(xLength, i);
+		yLength = Math.max(yLength, i);
 
 		while (i <= 99) {
 			map[i++][key] = 0;
