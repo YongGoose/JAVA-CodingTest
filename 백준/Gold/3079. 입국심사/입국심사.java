@@ -1,12 +1,10 @@
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.Arrays;
 import java.util.StringTokenizer;
 
 public class Main {
-	private static long[] times;
-
+	private static int[] array;
 	public static void main(String[] args) throws IOException {
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 		StringTokenizer st = new StringTokenizer(br.readLine());
@@ -14,46 +12,47 @@ public class Main {
 		int n = Integer.parseInt(st.nextToken());
 		int m = Integer.parseInt(st.nextToken());
 
-		times = new long[n];
+		array = new int[n];
 		long maxValue = 0;
-
 		for (int i = 0; i < n; i++) {
 			st = new StringTokenizer(br.readLine());
-			long input = Long.parseLong(st.nextToken());
 
-			maxValue = Math.max(maxValue, input);
-			times[i] = input;
+			array[i] = Integer.parseInt(st.nextToken());
+			maxValue = Math.max(maxValue, array[i]);
 		}
-		System.out.println(binarySearch(m, maxValue));
-	}
 
-	static long binarySearch(int m, long maxValue) {
-		long start = 0;
+		long start = 1;
 		long end = maxValue * m;
+
 		long result = 0;
+
 		while (start <= end) {
 			long mid = (start + end) / 2;
 
-			long cnt = calculatePerson(mid, m);
-			if (cnt < m) {
-				start = mid + 1;
-			} else {
-				result = mid;
+			long curCount = calculateTime(mid, m);
+
+			if (curCount >= m) {
 				end = mid - 1;
+				result = mid;
+				continue;
 			}
+
+			start = mid + 1;
 		}
-		return result;
+
+		System.out.println(result);
 	}
 
-	static long calculatePerson(long time, int m) {
-		long cnt = 0;
-		for (long t : times) {
-			cnt += (time / t);
+	private static long calculateTime(long time, int m) {
+		long res = 0;
 
-			if (cnt >= m) {
+		for (int a : array) {
+			if (res >= m) {
 				break;
 			}
+			
+			res += (time / a);
 		}
-		return cnt;
+		return res;
 	}
 }
