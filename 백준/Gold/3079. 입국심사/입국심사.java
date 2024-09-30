@@ -23,9 +23,7 @@ public class Main {
 
 		long start = 1;
 		long end = maxValue * m;
-
-		long result = 0;
-
+		
 		while (start <= end) {
 			long mid = (start + end) / 2;
 
@@ -33,14 +31,13 @@ public class Main {
 
 			if (curCount >= m) {
 				end = mid - 1;
-				result = mid;
 				continue;
 			}
 
 			start = mid + 1;
 		}
 
-		System.out.println(result);
+		System.out.println(start);
 	}
 
 	private static long calculateTime(long time, int m) {
@@ -50,7 +47,7 @@ public class Main {
 			if (res >= m) {
 				break;
 			}
-			
+
 			res += (time / a);
 		}
 		return res;
