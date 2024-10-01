@@ -5,7 +5,7 @@ import java.io.InputStreamReader;
 
 public class Main {
 	private static Character[][] map;
-	private static Set<String> likeString = new HashSet<>();
+	private static String[] likeString;
 	private static int n, m, maxLength;
 	private static Map<String, Integer> resultMap = new HashMap<>();
 	private static int[][] dir = {{1, 0}, {-1, 0}, {0, 1}, {0, -1}, {1, 1}, {1, -1}, {-1, 1}, {-1, -1}};
@@ -25,11 +25,12 @@ public class Main {
 			}
 		}
 
+		likeString = new String[k];
 		for (int i = 0; i < k; i++) {
 			String s = br.readLine();
 			resultMap.put(s, 0);
 			maxLength = Math.max(maxLength, s.length());
-			likeString.add(s);
+			likeString[i] = s;
 		}
 
 		for (int i = 0; i < n; i++) {
@@ -37,11 +38,15 @@ public class Main {
 				dfs(i, j, 1, map[i][j].toString());
 			}
 		}
-		resultMap.forEach((key, value) -> System.out.println(value));
+		StringBuilder sb = new StringBuilder();
+		for (String s : likeString) {
+			sb.append(resultMap.getOrDefault(s, 0)).append("\n");
+		}
+		System.out.println(sb);
 	}
 
 	private static void dfs(int y, int x, int depth, String answer) {
-		if (likeString.contains(answer)) {
+		if (resultMap.containsKey(answer)) {
 			resultMap.put(answer, resultMap.get(answer) + 1);
 		}
 
@@ -52,7 +57,6 @@ public class Main {
 		for (int i = 0; i < 8; i++) {
 			int ny = ((y + dir[i][0]) % n + n) % n;
 			int nx = ((x + dir[i][1]) % m + m) % m;
-
 
 			dfs(ny, nx, depth + 1,  answer + map[ny][nx]);
 		}
