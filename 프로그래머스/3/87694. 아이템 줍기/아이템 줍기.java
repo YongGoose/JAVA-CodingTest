@@ -1,54 +1,42 @@
-import java.util.*;
-import java.io.*;
-
 class Solution {
 	private char[][] map = new char[101][101];
 	private boolean[][] isVisited = new boolean[101][101];
 	private int[][] dir = {{1, 0}, {0, 1}, {-1, 0}, {0, -1}};
+	private int minValue = Integer.MAX_VALUE;
 
 	public int solution(int[][] rectangle, int characterX, int characterY, int itemX, int itemY) {
 		for(int[] rec : rectangle) {
 			draw(rec);
 		}
 		isVisited[characterY * 2][characterX * 2] = true;
-		return bfs(characterY * 2, characterX * 2, itemY * 2, itemX * 2);
+		dfs(characterY * 2, characterX * 2, itemY * 2, itemX * 2, 0);
+
+		return minValue / 2;
 	}
 
-	public int bfs(int y, int x, int itemY, int itemX) {
-        
-        Queue<int[]> queue = new LinkedList<>();
-        queue.offer(new int[]{y, x, 0});
-        
-        
-        while(!queue.isEmpty()) {
-            int[] currentPoint = queue.poll();
-            int cY = currentPoint[0];
-            int cX = currentPoint[1];
-            int result = currentPoint[2];
-            
-            if(cY == itemY && cX == itemX) {
-                return result / 2;
-            }
-            
+	public void dfs(int y, int x, int itemY, int itemX, int depth) {
+		if(y == itemY && x == itemX) {
+			minValue = Math.min(depth, minValue);
+			return;
+		}
 
-            for(int i = 0; i < 4; i++) {
-                int ny = cY + dir[i][0];
-                int nx = cX + dir[i][1];
+		for(int i = 0; i < 4; i++) {
+			int ny = y + dir[i][0];
+			int nx = x + dir[i][1];
 
-                if(!isOnBoard(ny, nx)) {
-                    continue;
-                }
-                if(!isVisited[ny][nx] && map[ny][nx] == '2') {
-                    isVisited[ny][nx] = true;
-                    queue.add(new int[] {ny, nx, result + 1});
-                }
-            }
-        }
-        return 0;
+			if(!isOnBoard(ny, nx)) {
+				continue;
+			}
+			if(!isVisited[ny][nx] && map[ny][nx] == '2') {
+				isVisited[ny][nx] = true;
+				dfs(ny, nx, itemY, itemX, depth + 1);
+				isVisited[ny][nx] = false;
+			}
+		}
 	}
 
 	public boolean isOnBoard(int y, int x) {
-		return y >= 2 && y < 101 && x >= 2 && x < 101;
+		return y >= 0 && y <= 100 && x >= 0 && x <= 100;
 	}
 
 	public void draw(int[] rec) {
