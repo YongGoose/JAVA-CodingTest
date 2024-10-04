@@ -1,34 +1,48 @@
 import java.util.*;
+import java.io.*;
 
 class Solution {
     public int solution(int bridge_length, int weight, int[] truck_weights) {
-        Queue<Integer> queue = new LinkedList<>();
-        int answer = 0, sum = 0;
         
-        for (int truck : truck_weights) {
+        Queue<Integer> queue = new LinkedList<>();
+        int currentWeight = 0;
+        int answer = 0;
+        
+        for(int truck : truck_weights) {
+            
+            if(truck > weight) {
+                continue;
+            }
+            
             while(true) {
-                if (queue.isEmpty()) {
+                if(queue.isEmpty()) {
                     queue.add(truck);
-                    answer++;
-                    sum += truck;
+                    answer += 1;
+                    currentWeight += truck;
                     break;
-                } else {
-                    if (queue.size() == bridge_length) {
-                        sum -= queue.poll();
-                    } else {
-                        if (sum + truck > weight) {
-                            queue.add(0);
-                            answer++;
-                        } else {
-                            queue.add(truck);
-                            sum += truck;
-                            answer++;
-                            break;
-                        }
-                    }
+                }
+            
+                if(queue.size() == bridge_length) {
+                    currentWeight -= queue.poll();
+                    continue;
+                }
+
+                if(currentWeight + truck <= weight) {
+                    queue.add(truck);
+                    currentWeight += truck;
+                    answer += 1;
+                    break;
+                }
+                
+                if(currentWeight + truck > weight) {
+                    queue.offer(0);
+                    answer++;
                 }
             }
         }
-        return answer + bridge_length;
+        if(!queue.isEmpty()) {
+            answer += bridge_length;
+        }
+        return answer;
     }
 }
