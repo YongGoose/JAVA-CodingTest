@@ -1,57 +1,84 @@
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.*;
+import java.util.PriorityQueue;
+import java.util.StringTokenizer;
+
 public class Main {
-    public static void main(String[] args) throws IOException {
-        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-        StringTokenizer st = new StringTokenizer(br.readLine());
+	static class Node implements Comparable<Node> {
+		int from;
+		int to;
+		int value;
 
-        int houseNum = Integer.parseInt(st.nextToken());
-        int roadNum = Integer.parseInt(st.nextToken());
+		public Node(final int from, final int to, final int value) {
+			this.from = from;
+			this.to = to;
+			this.value = value;
+		}
 
-        int[][] graph = new int[roadNum][3];
-        for (int i = 0; i < roadNum; i++) {
-            st = new StringTokenizer(br.readLine());
-            graph[i][0] = Integer.parseInt(st.nextToken());
-            graph[i][1] = Integer.parseInt(st.nextToken());
-            graph[i][2] = Integer.parseInt(st.nextToken());
-        }
-        Arrays.sort(graph, (o1, o2) -> o1[2] - o2[2]);
+		@Override
+		public int compareTo(Node o) {
+			return this.value - o.value;
+		}
+	}
+	
+	private static int[] parentHouse;
+	public static void main(String[] args) throws IOException {
+		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+		StringTokenizer st = new StringTokenizer(br.readLine());
 
-        int[] parent = new int[houseNum + 1];
-        for (int i = 1; i < houseNum + 1; i++) {
-            parent[i] = i;
-        }
-        System.out.println(kruskal(graph, parent));
-    }
-    static int kruskal(int[][] graph, int[] parent) {
-        int cost = 0, idx = 0;
-        for (int i = 0; i < graph.length; i++) {
-            if (findParent(parent, graph[i][0]) != findParent(parent, graph[i][1])) {
-                idx = i;
-                cost += graph[i][2];
-                unionFind(parent, graph[i][0], graph[i][1]);
-            }
-        }
-        cost -= graph[idx][2];
-        return cost;
-    }
+		int n = Integer.parseInt(st.nextToken());
+		int m = Integer.parseInt(st.nextToken());
 
-    static void unionFind(int[] parent, int x1, int x2) {
-        x1 = findParent(parent, x1);
-        x2 = findParent(parent, x2);
+		PriorityQueue<Node> queue = new PriorityQueue<>();
+		for (int i = 0; i < m; i++) {
+			st = new StringTokenizer(br.readLine());
+			int from = Integer.parseInt(st.nextToken());
+			int to = Integer.parseInt(st.nextToken());
+			int value = Integer.parseInt(st.nextToken());
 
-        if (x1 < x2) {
-            parent[x2] = x1;
-        } else {
-            parent[x1] = x2;
-        }
-    }
-    static int findParent(int[] parent, int x) {
-        if (parent[x] == x) {
-            return x;
-        }
-        return findParent(parent, parent[x]);
-    }
+			queue.add(new Node(from, to, value));
+		}
+
+		parentHouse = new int[n + 1];
+		for (int i = 0; i < n + 1; i++) {
+			parentHouse[i] = i;
+		}
+
+		System.out.println(kruskal(queue));
+	}
+
+	private static int kruskal(PriorityQueue<Node> queue) {
+		int removeNode = 0;
+		int result = 0;
+
+		while (!queue.isEmpty()) {
+			Node node = queue.poll();
+
+			if (findParent(node.from) != findParent(node.to)) {
+				union(parentHouse, node.from, node.to);
+				result += node.value;
+				removeNode = node.value;
+			}
+		}
+		return result - removeNode;
+	}
+
+	private static int findParent(int num) {
+		if (parentHouse[num] == num) {
+			return num;
+		}
+		return findParent(parentHouse[num]);
+	}
+
+	private static void union(int[] parentHouse, int y, int x) {
+		int parentY = findParent(y);
+		int parentX = findParent(x);
+
+		if (parentY >= parentX) {
+			parentHouse[parentY] = parentX;
+		} else {
+			parentHouse[parentX] = parentY;
+		}
+	}
 }
