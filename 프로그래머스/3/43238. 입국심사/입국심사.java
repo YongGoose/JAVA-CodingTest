@@ -1,28 +1,34 @@
-import java.util.*;
 class Solution {
     public long solution(int n, int[] times) {
-        Arrays.sort(times);
-        return binarySearch(1, (long) times[times.length - 1] * n, n, times);
-    }
-    public long binarySearch(long left, long right, int n, int[] times){
+        long maxValue = 0;
+        for(int time : times) {
+            maxValue = Math.max(maxValue, time);
+        }
+        
+        long start = 0, end = n * maxValue;
+        System.out.println(end);
         long answer = 0;
-        while (left <= right){            
-            long mid = (left + right) / 2;
+        while(start <= end) {
+            long mid = (start + end) / 2;
+            long res = compareTime(mid, times);
             
-            if(countPerson(mid, times) < n){
-                left = mid + 1;
-            } else {
+            if(res >= n) {
                 answer = mid;
-                right = mid - 1;
+                end = mid - 1;
+                continue;
             }
+            start = mid + 1;
         }
         return answer;
     }
-    public long countPerson(long mid, int[] times){
-        long cnt = 0;
-        for(int time : times){
-            cnt += (mid / time);
+    
+    private long compareTime(long t, int[] times) {
+        long result = 0;
+        
+        for(int time : times) {
+            result += t / time;
         }
-        return cnt;
+        
+        return result;
     }
 }
