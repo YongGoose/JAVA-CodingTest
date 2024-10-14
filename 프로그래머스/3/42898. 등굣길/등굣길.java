@@ -1,27 +1,28 @@
 class Solution {
-    private final int mod = 1_000_000_007;
     public int solution(int m, int n, int[][] puddles) {
-        
-        int[][] board = new int[n + 1][m + 1];
-        for(int i = 0; i < puddles.length; i++) {
-            board[puddles[i][1]][puddles[i][0]] = -1; 
+        int[][] dp = new int[n + 1][m + 1];
+        for(int[] puddle : puddles) {
+            dp[puddle[1]][puddle[0]] = -1;
         }
-        board[1][1] = 1;
         
+        dp[1][1] = 1;
         for(int i = 1; i < n + 1; i++) {
             for(int j = 1; j < m + 1; j++) {
-                if(board[i][j] == -1)
+                if(dp[i][j] == -1) {
                     continue;
-                
-                if(board[i - 1][j] != -1) {
-                    board[i][j] += board[i - 1][j] % mod;                    
                 }
-                if(board[i][j - 1] != -1) {
-                    board[i][j] += board[i][j - 1] % mod;                    
+                
+                if(dp[i - 1][j] > 0) {
+                    dp[i][j] = (dp[i][j] + dp[i - 1][j]) % 1_000_000_007;
+                }
+                
+                if(dp[i][j - 1] > 0) {
+                    dp[i][j] = (dp[i][j] + dp[i][j - 1]) % 1_000_000_007;
                 }
             }
         }
-
-        return board[n][m] % mod;
+        
+        int answer = dp[n][m] % 1_000_000_007;
+        return answer;
     }
 }
