@@ -1,83 +1,76 @@
 import java.util.*;
 
 class Solution {
-    public int[] solution(String[] genres, int[] plays) {
-        return calculateMusic(genres, plays);
-    }
-    
-    public int[] calculateMusic (String[] genres, int[] plays) {
-        HashMap<String, Genre> map = new HashMap<>();        
-        for(int i = 0; i < genres.length; i++){
-            Genre genre = map.getOrDefault(genres[i], new Genre());
-            genre.addMusic(new Music(plays[i], i));
-            map.put(genres[i], genre);
+	public int[] solution(String[] genres, int[] plays) {
+		Map<String, List<Music>> map = new HashMap<>();
+
+		for(int i = 0; i < plays.length; i++) {
+			map.put(genres[i], map.getOrDefault(genres[i], new ArrayList<>()));
+			map.get(genres[i]).add(new Music(i, plays[i]));
+		}
+        
+        Set<String> keySet = map.keySet();
+        List<SortedGenre> genreList = new ArrayList<>();
+        for(String key : keySet) {
+            List<Music> q = map.get(key);
+            int num = 0;
+            
+            for(Music m : q) {
+                num += m.play;
+            }
+            genreList.add(new SortedGenre(key, num));
         }
         
-        List<Genre> genrelist = new ArrayList<>(map.values());
-        Collections.sort(genrelist);
+        Collections.sort(genreList);
         
-        ArrayList<Integer> resultArray = new ArrayList<>();
-        for(Genre genre: genrelist) {
-            for(Music music : genre.getTopTwo()) {
-                resultArray.add(music.originNumber);
+        List<Integer> resultList = new ArrayList<>();
+        for(SortedGenre genre : genreList) {
+            String currentGenre = genre.genre;
+            List<Music> musicList = map.get(currentGenre);
+            Collections.sort(musicList);
+            
+            for(int i = 0; i < Math.min(2, musicList.size()); i++) {
+                if(map.get(currentGenre).isEmpty()) {
+                    break;
+                }
+                resultList.add(musicList.get(i).originNum);
             }
         }
-        return listToIntArray(resultArray);
-    } 
+
+		int[] answer = resultList.stream().mapToInt(i -> i).toArray();
+		return answer;
+	}
+
+	static class Music implements Comparable<Music> {
+		int originNum;
+		int play;
+
+		public Music(final int originNum, final int play) {
+			this.originNum = originNum;
+			this.play = play;
+		}
+        
+        @Override
+        public int compareTo(Music o) {
+            if(this.play == o.play) {
+                return this.originNum - o.originNum;
+            }
+            return o.play - this.play;
+        }
+	}
     
-    public int[] listToIntArray(List<Integer> integerList) {
-        int[] array = new int[integerList.size()];
+    static class SortedGenre implements Comparable<SortedGenre> {
+        String genre;
+        int plays;
         
-        int idx = 0;
-        for(int i : integerList) {
-            array[idx] = i;
-            idx++;
-        }
-        return array;
-    }
-        
-        
-    static class Genre implements Comparable<Genre> {
-        ArrayList<Music> array = new ArrayList<>();
-        int number;
-        
-        public Genre() {
-            this.number = 0;
-        }
-        public void addMusic(Music music) {
-            this.number += music.number;
-            array.add(music);
-        }
-        public void sortList() {
-            Collections.sort(array);
-        }
-        
-        public List<Music> getTopTwo() {
-            Collections.sort(array);
-            return array.subList(0, Math.min(array.size(), 2));
+        public SortedGenre (final String genre, final int plays) {
+            this.genre = genre;
+            this.plays = plays;
         }
         
         @Override
-        public int compareTo(Genre o){
-            return o.number - this.number;
+        public int compareTo(SortedGenre o) {
+            return o.plays - this.plays;
         }
     }
-    
-    static class Music implements Comparable<Music> {
-        int number;
-        int originNumber;
-        
-        public Music(int number, int originNumber){
-            this.number = number;
-            this.originNumber = originNumber;
-        }
-        
-        @Override
-        public int compareTo (Music o){
-            if (this.number == o.number) {
-                return this.originNumber - o.originNumber;
-            }
-            return o.number - this.number;
-        }
-    }      
 }
