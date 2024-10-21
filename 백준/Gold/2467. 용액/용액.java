@@ -18,7 +18,6 @@ public class Main {
 			array[i] = Integer.parseInt(st.nextToken());
 		}
 
-		Arrays.sort(array);
 		int start = 0, end = n - 1;
 		int minValue = Integer.MAX_VALUE;
 		int minStart = 0, minEnd = 0;
