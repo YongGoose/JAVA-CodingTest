@@ -38,18 +38,20 @@ public class Main {
 			int left = 0;
 			int right = m - 1;
 
-			while (left < right) {
+			while (left <= right) {
 				int mid = (left + right) / 2;
+
+				int distance = Math.abs(shootingSpot[mid] - ax) + ay;
+				if (distance <= l) {
+					count++;
+					break;
+				}
 
 				if (shootingSpot[mid] < ax) {
 					left = mid + 1;
 				} else {
-					right = mid;
+					right = mid - 1;
 				}
-			}
-
-			if ((Math.abs(shootingSpot[right] - ax) + ay) <= l) {
-				count++;
 			}
 		}
 
